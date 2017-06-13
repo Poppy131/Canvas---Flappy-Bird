@@ -11,7 +11,7 @@
 
         this.imgW = this.imgTop.width;
         this.imgH = this.imgTop.height;
-        this.space = 100;
+        this.space = 50;
 
         this.topY = 0;
         this.bottomY = 0;
