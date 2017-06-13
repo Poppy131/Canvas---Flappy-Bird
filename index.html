@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<canvas id="cv"></canvas>
+
+
+<script src="./js/fly.js"></script>
+<script src="./js/bird.js"></script>
+<script src="./js/sky.js"></script>
+<script src="./js/land.js"></script>
+<script src="./js/pipe.js"></script>
+<script>
+
+    var cv = document.querySelector("#cv");
+
+    cv.width = 800;
+    cv.height = 600;
+    cv.style.border="1px solid red";
+
+
+    var ctx =  cv.getContext('2d');
+
+
+    var imgSrc = ["birds","land","sky","pipe1","pipe2"]
+
+    Fly.loadImages(imgSrc,function(imgList){
+
+
+        var lastTime = new Date();
+        var delta = 0 ;
+        var curTime = null;
+        var isStart = true;
+
+//        小鸟对象
+        var bird = Fly.factory("Bird",{
+            img:imgList.birds,
+            ctx:ctx
+        });
+
+        var roles = [];
+
+//        两个天空对象
+        for(var i = 0;i<2;i++){
+            var sky = Fly.factory("Sky",{
+                img:imgList.sky,
+                ctx:ctx,
+                x: i*imgList.sky.width,
+            })
+
+            roles.push(sky);
+        }
+
+
+//        六组管道对象
+        for(var i = 0;i < 6;i++){
+            var pipe = Fly.factory("Pipe",{
+                imgTop:imgList.pipe1,
+                imgBottom:imgList.pipe2,
+                ctx:ctx,
+                x:200+i*imgList.pipe1.width*3
+            })
+            roles.push(pipe);
+        }
+
+
+//        四个陆地对象
+        for(var i= 0 ;i<4;i++){
+            var land = Fly.factory("Land",{
+                img:imgList.land,
+                ctx:ctx,
+                x: i * imgList.land.width,
+                y:imgList.sky.height - imgList.land.height
+            })
+            roles.push(land);
+        }
+
+
+        (function render(){
+
+            curTime = new Date();
+            delta  = curTime - lastTime;
+            lastTime = curTime;
+            ctx.save();
+            ctx.clearRect(0,0,cv.width,cv.height);
+            ctx.beginPath();
+            roles.forEach(function(value){
+                value.draw(delta);
+            })
+
+
+            bird.draw(delta);
+
+            //console.log(roles[0].imgH);
+            //console.log(imgList.sky.height - imgList.land.height);
+            if(bird.y<0||bird.y>imgList.sky.height - imgList.land.height || this.ctx.isPointInPath(bird.x,bird.y)){
+                isStart = false;
+            }
+
+            ctx.restore();
+            if(isStart){
+                requestAnimationFrame(render);
+            }
+
+        })();
+
+        cv.addEventListener("click",function(){
+            bird.speed = -0.3;
+        })
+    })
+
+
+
+</script>
+</body>
+</html>
