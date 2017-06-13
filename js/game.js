@@ -26,10 +26,10 @@
             })
 
         },
-        //创建对象
+        //鍒涘缓瀵硅薄
         initRoles:function(imgList){
             var that = this;
-            //        小鸟对象
+            //        灏忛笩瀵硅薄
             this.bird = Fly.factory("Bird",{
                 img:imgList.birds,
                 ctx:this.ctx
@@ -40,7 +40,7 @@
                 })
 
 
-//        两个天空对象
+//        涓や釜澶╃┖瀵硅薄
             for(var i = 0;i<2;i++){
                 var sky = Fly.factory("Sky",{
                     img:imgList.sky,
@@ -51,19 +51,19 @@
                 this.roles.push(sky);
             }
 
-//        六组管道对象
+//        鍏粍绠￠亾瀵硅薄
             for(var i = 0;i < 6;i++){
                 var pipe = Fly.factory("Pipe",{
                     imgTop:imgList.pipe1,
                     imgBottom:imgList.pipe2,
                     ctx:this.ctx,
-                    x:300+i*imgList.pipe1.width*3
+                    x:400+i*imgList.pipe1.width*3
                 })
                 this.roles.push(pipe);
             }
 
 
-//        四个陆地对象
+//        鍥涗釜闄嗗湴瀵硅薄
             for(var i= 0 ;i<4;i++){
                 var land = Fly.factory("Land",{
                     img:imgList.land,
